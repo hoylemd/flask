@@ -18,11 +18,10 @@ def whoami():
     return output
 
 
-@app.route('/people')
+@app.route('/person/')
 def people_index():
     output = 'People I know<br><ul>'
     for name in people:
-        print name
         output += '<li><a href="/person/' + name + '">' + people[name]['name']
         output += '</a></li>'
 
@@ -39,7 +38,7 @@ def person(shortname):
     else:
         output += shortname + ' is not a person I know.'
 
-    output += '</p><a href="/people">back to list</a>'
+    output += '</p><a href="/person">back to list</a>'
 
     return output
 
