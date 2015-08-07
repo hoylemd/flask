@@ -1,5 +1,8 @@
 from flask import Flask
+from people import people
 app = Flask(__name__)
+
+me = 'mike'
 
 
 @app.route('/')
@@ -9,7 +12,36 @@ def hello_world():
 
 @app.route('/whoami')
 def whoami():
-    return 'I am Michael D. Hoyle, 26 year old programmer, and lover of dogs.'
+    person = people[me]
+    output = 'I am ' + person['name'] + ', ' + str(person['age'])
+    output += ' year old ' + person['job'] + ', and ' + person['tidbit']
+    return output
+
+
+@app.route('/people')
+def people_index():
+    output = 'People I know<br><ul>'
+    for name in people:
+        print name
+        output += '<li><a href="/person/' + name + '">' + people[name]['name']
+        output += '</a></li>'
+
+    return output
+
+
+@app.route('/person/<shortname>')
+def person(shortname):
+    output = "<p>"
+    if shortname in people:
+        person = people[shortname]
+        output += person['name'] + ' is a ' + str(person['age'])
+        output += ' year old ' + person['job'] + ', ' + person['tidbit']
+    else:
+        output += shortname + ' is not a person I know.'
+
+    output += '</p><a href="/people">back to list</a>'
+
+    return output
 
 
 def run_app():
