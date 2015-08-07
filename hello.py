@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 from people import people
 app = Flask(__name__)
 
@@ -19,11 +19,11 @@ def whoami():
 
 
 @app.route('/person/')
-def people_index():
+def person_index():
     output = 'People I know<br><ul>'
     for name in people:
-        output += '<li><a href="/person/' + name + '">' + people[name]['name']
-        output += '</a></li>'
+        output += '<li><a href="' + url_for('person', shortname=name) + '">'
+        output += people[name]['name'] + '</a></li>'
 
     return output
 
@@ -38,7 +38,7 @@ def person(shortname):
     else:
         output += shortname + ' is not a person I know.'
 
-    output += '</p><a href="/person">back to list</a>'
+    output += '</p><a href="' + url_for('person_index') + '">back to list</a>'
 
     return output
 
